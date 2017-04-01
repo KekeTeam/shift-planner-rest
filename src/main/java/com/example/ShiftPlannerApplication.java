@@ -1,7 +1,9 @@
 package com.example;
 
+import com.example.entities.Team;
 import com.example.entities.Property;
 import com.example.entities.User;
+import com.example.repositories.TeamRepositoryInterface;
 import com.example.repositories.PropertyRepositoryInterface;
 import com.example.repositories.UserRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,13 @@ class DummyCLR implements CommandLineRunner {
 
     private final UserRepositoryInterface userRepository;
     private final PropertyRepositoryInterface propertyRepository;
+    private final TeamRepositoryInterface teamRepository;
 
     @Autowired
-    public DummyCLR(UserRepositoryInterface userRepository, PropertyRepositoryInterface propertyRepository) {
+    public DummyCLR(UserRepositoryInterface userRepository, PropertyRepositoryInterface propertyRepository, TeamRepositoryInterface teamRepository) {
         this.userRepository = userRepository;
         this.propertyRepository = propertyRepository;
+        this.teamRepository = teamRepository;
     }
 
     @Override
@@ -46,5 +50,16 @@ class DummyCLR implements CommandLineRunner {
         propertyRepository.save( new Property("Anglais", "Parle mieux anglais que Keke"));
 
         propertyRepository.findAll().forEach(System.out::println);
+
+
+        teamRepository.save( new Team("patissier"));
+        teamRepository.save( new Team("cuisinier"));
+        teamRepository.save( new Team("serveur"));
+        teamRepository.save( new Team("caissier"));
+
+
+        teamRepository.findAll().forEach(System.out::println);
+
+
     }
 }
