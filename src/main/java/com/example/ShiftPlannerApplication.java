@@ -1,6 +1,8 @@
 package com.example;
 
+import com.example.entities.Property;
 import com.example.entities.User;
+import com.example.repositories.PropertyRepositoryInterface;
 import com.example.repositories.UserRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,10 +24,12 @@ public class ShiftPlannerApplication {
 class DummyCLR implements CommandLineRunner {
 
     private final UserRepositoryInterface userRepository;
+    private final PropertyRepositoryInterface propertyRepository;
 
     @Autowired
-    public DummyCLR(UserRepositoryInterface userRepository) {
+    public DummyCLR(UserRepositoryInterface userRepository, PropertyRepositoryInterface propertyRepository) {
         this.userRepository = userRepository;
+        this.propertyRepository = propertyRepository;
     }
 
     @Override
@@ -35,5 +39,12 @@ class DummyCLR implements CommandLineRunner {
         userRepository.save( new User("MAS", "Kevin", "08097503223", "maskevin74@gmail.com","kmas", "mdpkmas"));
 
         userRepository.findAll().forEach(System.out::println);
+
+
+        propertyRepository.save( new Property("Permis de conduire", "Possession du permis de conduire"));
+        propertyRepository.save( new Property("Force physique", "Porter des trucs lourds"));
+        propertyRepository.save( new Property("Anglais", "Parle mieux anglais que Keke"));
+
+        propertyRepository.findAll().forEach(System.out::println);
     }
 }
