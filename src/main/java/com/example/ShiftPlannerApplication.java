@@ -1,8 +1,10 @@
 package com.example;
 
+import com.example.entities.Task;
 import com.example.entities.Team;
 import com.example.entities.Property;
 import com.example.entities.User;
+import com.example.repositories.TaskRepositoryInterface;
 import com.example.repositories.TeamRepositoryInterface;
 import com.example.repositories.PropertyRepositoryInterface;
 import com.example.repositories.UserRepositoryInterface;
@@ -28,12 +30,14 @@ class DummyCLR implements CommandLineRunner {
     private final UserRepositoryInterface userRepository;
     private final PropertyRepositoryInterface propertyRepository;
     private final TeamRepositoryInterface teamRepository;
+    private final TaskRepositoryInterface taskRepository;
 
     @Autowired
-    public DummyCLR(UserRepositoryInterface userRepository, PropertyRepositoryInterface propertyRepository, TeamRepositoryInterface teamRepository) {
+    public DummyCLR(UserRepositoryInterface userRepository, PropertyRepositoryInterface propertyRepository, TeamRepositoryInterface teamRepository, TaskRepositoryInterface taskRepository) {
         this.userRepository = userRepository;
         this.propertyRepository = propertyRepository;
         this.teamRepository = teamRepository;
+        this.taskRepository = taskRepository;
     }
 
     @Override
@@ -59,6 +63,13 @@ class DummyCLR implements CommandLineRunner {
 
 
         teamRepository.findAll().forEach(System.out::println);
+
+
+        taskRepository.save( new Task("Service en salle", "servir les clients"));
+        taskRepository.save( new Task("préparer les plats", "préparer en cuisine les plats"));
+
+
+        taskRepository.findAll().forEach(System.out::println);
 
 
     }
