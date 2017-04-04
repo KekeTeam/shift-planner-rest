@@ -1,8 +1,8 @@
 package com.example.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 public class Property {
@@ -16,6 +16,9 @@ public class Property {
 
     private String description;
 
+    @ManyToMany(mappedBy = "properties", fetch= FetchType.EAGER)
+    private Collection<User> users;
+
 
     @Override
     public String toString() {
@@ -23,6 +26,7 @@ public class Property {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                //", users=" + users +
                 '}';
     }
 
@@ -32,6 +36,7 @@ public class Property {
     public Property(String name, String description) {
         this.name = name;
         this.description = description;
+        this.users = new ArrayList<>();
     }
 
     public Long getId() {
@@ -44,5 +49,9 @@ public class Property {
 
     public String getDescription() {
         return description;
+    }
+
+    public Collection<User> getUsers() {
+        return users;
     }
 }

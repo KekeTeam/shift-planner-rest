@@ -49,17 +49,29 @@ class DummyCLR implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        userRepository.save( new User("BULME", "Kevin", "09060591901", "kevin.bulme@gmail.com", "kbulme", "mdpkbulme"));
-        userRepository.save( new User("MAS", "Kevin", "08097503223", "maskevin74@gmail.com","kmas", "mdpkmas"));
+        User user1 = new User("BULME", "Kevin", "09060591901", "kevin.bulme@gmail.com", "kbulme", "mdpkbulme");
+        User user2 = new User("MAS", "Kevin", "08097503223", "maskevin74@gmail.com","kmas", "mdpkmas");
+        userRepository.save(user1);
+        userRepository.save(user2);
 
-        userRepository.findAll().forEach(System.out::println);
 
 
-        propertyRepository.save( new Property("Permis de conduire", "Possession du permis de conduire"));
-        propertyRepository.save( new Property("Force physique", "Porter des trucs lourds"));
-        propertyRepository.save( new Property("Anglais", "Parle mieux anglais que Keke"));
 
-        propertyRepository.findAll().forEach(System.out::println);
+        Property property1 = new Property("Permis de conduire", "Possession du permis de conduire");
+        Property property2 = new Property("Force physique", "Porter des trucs lourds");
+        Property property3 = new Property("Anglais", "Parle mieux anglais que Keke");
+        propertyRepository.save(property1);
+        propertyRepository.save(property2);
+        propertyRepository.save(property3);
+
+        //ManyToMany test
+        propertyRepository.flush();
+        userRepository.flush();
+
+        user1.getProperties().add(property3);
+        user2.getProperties().add(property2);
+        userRepository.saveAndFlush(user1);
+        userRepository.saveAndFlush(user2);
 
 
         teamRepository.save( new Team("patissier"));
@@ -68,18 +80,24 @@ class DummyCLR implements CommandLineRunner {
         teamRepository.save( new Team("caissier"));
 
 
-        teamRepository.findAll().forEach(System.out::println);
+
 
         slotRepository.save( new Slot( new Date() , new Date()));
         slotRepository.save( new Slot(new Date() , new Date()));
 
-        slotRepository.findAll().forEach(System.out::println);
+
 
         taskRepository.save( new Task("Service en salle", "servir les clients"));
         taskRepository.save( new Task("préparer les plats", "préparer en cuisine les plats"));
 
 
+
+
+        propertyRepository.findAll().forEach(System.out::println);
+        userRepository.findAll().forEach(System.out::println);
         taskRepository.findAll().forEach(System.out::println);
+        teamRepository.findAll().forEach(System.out::println);
+        slotRepository.findAll().forEach(System.out::println);
 
 
     }

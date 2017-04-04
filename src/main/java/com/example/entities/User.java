@@ -1,15 +1,20 @@
 package com.example.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 @Entity
+@Table(name = "user")
 public class User {
 
 
     @Id
     @GeneratedValue
+    @Column(name = "USER_ID", unique = true, nullable = false)
     private Long id;
 
     private String lastName;
@@ -24,6 +29,9 @@ public class User {
 
     private String password;
 
+    @ManyToMany(fetch= FetchType.EAGER) //EAGER is usefull because we access the collection after hibernate session is close
+    private Collection<Property> properties;
+
     @Override
     public String toString() {
         return "User{" +
@@ -34,6 +42,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", properties=" + properties +
                 '}';
     }
 
@@ -48,6 +57,7 @@ public class User {
         this.email = email;
         this.login = login;
         this.password = password;
+        this.properties = new ArrayList<>();
     }
 
     public Long getId() {
@@ -78,4 +88,7 @@ public class User {
         return password;
     }
 
+    public Collection<Property> getProperties() {
+        return properties;
+    }
 }
