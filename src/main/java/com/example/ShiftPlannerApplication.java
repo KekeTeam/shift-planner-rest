@@ -64,34 +64,37 @@ class DummyCLR implements CommandLineRunner {
         propertyRepository.save(property2);
         propertyRepository.save(property3);
 
-        //ManyToMany test
+        Slot slot1 = new Slot(new Date() , new Date());
+        Slot slot2 = new Slot(new Date() , new Date());
+
+        slotRepository.save( slot1 );
+        slotRepository.save( slot2 );
+
+        //ManyToMany Properties/user test
         propertyRepository.flush();
         userRepository.flush();
+        slotRepository.flush();
 
         user1.getProperties().add(property3);
         user2.getProperties().add(property2);
+
         userRepository.saveAndFlush(user1);
         userRepository.saveAndFlush(user2);
 
+        //ManyToMany Slot/user test
+        user1.getSlots().add(slot1);
+        user2.getSlots().add(slot2);
+
+        userRepository.saveAndFlush(user1);
+        userRepository.saveAndFlush(user2);
 
         teamRepository.save( new Team("patissier"));
         teamRepository.save( new Team("cuisinier"));
         teamRepository.save( new Team("serveur"));
         teamRepository.save( new Team("caissier"));
 
-
-
-
-        slotRepository.save( new Slot( new Date() , new Date()));
-        slotRepository.save( new Slot(new Date() , new Date()));
-
-
-
         taskRepository.save( new Task("Service en salle", "servir les clients"));
         taskRepository.save( new Task("préparer les plats", "préparer en cuisine les plats"));
-
-
-
 
         propertyRepository.findAll().forEach(System.out::println);
         userRepository.findAll().forEach(System.out::println);

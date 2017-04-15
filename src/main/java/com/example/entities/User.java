@@ -1,5 +1,8 @@
 package com.example.entities;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 
 import java.util.ArrayList;
@@ -32,6 +35,11 @@ public class User {
     @ManyToMany(fetch= FetchType.EAGER) //EAGER is usefull because we access the collection after hibernate session is close
     private Collection<Property> properties;
 
+    //Hibernate doesn't like two collections with FetchType.EAGER, MultipleBagFetchException error
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Collection<Slot> slots;
+
     @Override
     public String toString() {
         return "User{" +
@@ -43,6 +51,7 @@ public class User {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", properties=" + properties +
+                ", slots=" + slots +
                 '}';
     }
 
@@ -58,6 +67,7 @@ public class User {
         this.login = login;
         this.password = password;
         this.properties = new ArrayList<>();
+        this.slots = new ArrayList<>();
     }
 
     public Long getId() {
@@ -91,4 +101,6 @@ public class User {
     public Collection<Property> getProperties() {
         return properties;
     }
+
+    public Collection<Slot> getSlots() {return slots;}
 }
